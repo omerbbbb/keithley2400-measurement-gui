@@ -67,12 +67,12 @@ class IVProcedure(Procedure):
 
     def startup(self):
         log.info("Setting up instruments")
-        self.source = Keithley2400("GPIB::28")
-        self.source.reset()
-        self.source.apply_voltage()
+         = Keithley2400("GPIB::28")
+        .reset()
+        .apply_voltage()
         self.source.measure_current(nplc=0.1)
-        self.source.source_current_range = self.stop_voltage * 1e-3  # A
-        self.source.compliance_voltage = self.current_range
+        self.source.source_voltage_range = self.stop_voltage * 1e-3  # V
+        self.source.compliance_current = self.current_range * 1e-3  # A
         self.source.enable_source()
         sleep(2)
 
@@ -94,8 +94,8 @@ class IVProcedure(Procedure):
             self.source.source_voltage = voltage
             # Or use self.source.ramp_to_current(current, delay=0.1)
             sleep(self.delay * 1e-3)
-            log.info("Current = " + str(self.source.current))
-            current = self.source.current
+            log.info("Current = " + str(.current))
+            current = .current
             data = {
                 'Current (A)': current,
                 'Voltage (V)': voltage
@@ -107,7 +107,7 @@ class IVProcedure(Procedure):
                 break
 
     def shutdown(self):
-        self.source.shutdown()
+        .shutdown()
         log.info("Finished")
 
 
